@@ -734,18 +734,29 @@ def create_ui(config, theme_name="Ocean"):
     """
 
     with gr.Blocks(
-            title="Browser Use WebUI", theme=theme_map[theme_name], css=css
+            title="AgenticME", theme=theme_map[theme_name], css=css
     ) as demo:
         with gr.Row():
             gr.Markdown(
                 """
-                # 🌐 Browser Use WebUI
-                ### Control your browser with AI assistance
+                # AgenticME
+                ### Your completely private AI browser agent running inside a TEE 🤖
                 """,
                 elem_classes=["header-text"],
             )
 
         with gr.Tabs() as tabs:
+            with gr.TabItem("🔒 Attestation", id=0):
+                with gr.Group():
+                    # create a simple text labeel
+                    serverURL = gr.Textbox(
+                        label="Server URL",
+                        placeholder="http://localhost:7788",
+                        value="",
+                        info="attestation server URL",
+                        interactive=True,  # Allow editing only if recording is enabled
+                    )
+
             with gr.TabItem("⚙️ Agent Settings", id=1):
                 with gr.Group():
                     agent_type = gr.Radio(
@@ -1128,10 +1139,10 @@ def create_ui(config, theme_name="Ocean"):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Gradio UI for Browser Agent")
+    parser = argparse.ArgumentParser(description="Your completly confidential browser agent running inside a TEE")
     parser.add_argument("--ip", type=str, default="127.0.0.1", help="IP address to bind to")
     parser.add_argument("--port", type=int, default=7788, help="Port to listen on")
-    parser.add_argument("--theme", type=str, default="Ocean", choices=theme_map.keys(), help="Theme to use for the UI")
+    parser.add_argument("--theme", type=str, default="Default", choices=theme_map.keys(), help="Theme to use for the UI")
     parser.add_argument("--dark-mode", action="store_true", help="Enable dark mode")
     args = parser.parse_args()
 
