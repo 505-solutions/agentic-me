@@ -2,7 +2,6 @@ services:
   agentic-me-oyster:
     platform: linux/arm64
     image: lukaskel/agentic-me:latest
-    network_mode: host
     ports:
       - "7788:7788"  # Gradio default port
       - "6080:6080"  # noVNC web interface
@@ -39,7 +38,6 @@ services:
       - VNC_PASSWORD=${VNC_PASSWORD:-vncpassword}
       - CHROME_DEBUGGING_PORT=9222
       - CHROME_DEBUGGING_HOST=localhost
-      - CHROME_PERSISTENT_SESSION=true
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
     restart: unless-stopped
