@@ -2,6 +2,7 @@ services:
   agentic-me-oyster:
     platform: linux/arm64
     image: lukaskel/agentic-me:latest
+    network_mode: host
     ports:
       - "7788:7788"  # Gradio default port
       - "6080:6080"  # noVNC web interface
@@ -54,3 +55,4 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+
