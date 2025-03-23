@@ -1,0 +1,1 @@
+oyster-cvm deploy --wallet-private-key abc123 --duration-in-minutes 20 --debug --docker-compose docker-compose.yml --instance-type m7g.xlarge
