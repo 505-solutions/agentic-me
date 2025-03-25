@@ -1083,27 +1083,6 @@ def create_ui(config, theme_name="Ocean"):
                 trace_file = gr.File(label="Trace File")
                 agent_history_file = gr.File(label="Agent History")
 
-            with gr.TabItem("🧐 Deep Research", id=5):
-                research_task_input = gr.Textbox(
-                    label="Research Task",
-                    lines=5,
-                    value="Compose a report on the use of Reinforcement Learning for training Large Language Models, encompassing its origins, current advancements, and future prospects, substantiated with examples of relevant models and techniques. The report should reflect original insights and analysis, moving beyond mere summarization of existing literature.",
-                )
-                with gr.Row():
-                    max_search_iteration_input = gr.Number(
-                        label="Max Search Iteration", value=3, precision=0
-                    )  # precision=0 确保是整数
-                    max_query_per_iter_input = gr.Number(
-                        label="Max Query per Iteration", value=1, precision=0
-                    )  # precision=0 确保是整数
-                with gr.Row():
-                    research_button = gr.Button(
-                        "▶️ Run Deep Research", variant="primary", scale=2
-                    )
-                    stop_research_button = gr.Button("⏹ Stop", variant="stop", scale=1)
-                markdown_output_display = gr.Markdown(label="Research Report")
-                markdown_download = gr.File(label="Download Research Report")
-
             # Bind the stop button click event after errors_output is defined
             stop_button.click(
                 fn=stop_agent,
@@ -1155,38 +1134,6 @@ def create_ui(config, theme_name="Ocean"):
                 ],
             )
 
-            # Run Deep Research
-            research_button.click(
-                fn=run_deep_search,
-                inputs=[
-                    research_task_input,
-                    max_search_iteration_input,
-                    max_query_per_iter_input,
-                    llm_provider,
-                    llm_model_name,
-                    llm_num_ctx,
-                    llm_temperature,
-                    llm_base_url,
-                    llm_api_key,
-                    use_vision,
-                    use_own_browser,
-                    headless,
-                    chrome_cdp,
-                ],
-                outputs=[
-                    markdown_output_display,
-                    markdown_download,
-                    stop_research_button,
-                    research_button,
-                ],
-            )
-            # Bind the stop button click event after errors_output is defined
-            stop_research_button.click(
-                fn=stop_research_agent,
-                inputs=[],
-                outputs=[stop_research_button, research_button],
-            )
-
             with gr.TabItem("🎥 Recordings", id=7, visible=True):
 
                 def list_recordings(save_recording_path):
@@ -1224,79 +1171,6 @@ def create_ui(config, theme_name="Ocean"):
                     fn=list_recordings,
                     inputs=save_recording_path,
                     outputs=recordings_gallery,
-                )
-
-            with gr.TabItem("📁 UI Configuration", id=8):
-                config_file_input = gr.File(
-                    label="Load Config File", file_types=[".pkl"], interactive=True
-                )
-                with gr.Row():
-                    load_config_button = gr.Button(
-                        "Load Existing Config From File", variant="primary"
-                    )
-                    save_config_button = gr.Button(
-                        "Save Current Config", variant="primary"
-                    )
-
-                config_status = gr.Textbox(label="Status", lines=2, interactive=False)
-
-                load_config_button.click(
-                    fn=update_ui_from_config,
-                    inputs=[config_file_input],
-                    outputs=[
-                        agent_type,
-                        max_steps,
-                        max_actions_per_step,
-                        use_vision,
-                        tool_calling_method,
-                        llm_provider,
-                        llm_model_name,
-                        llm_num_ctx,
-                        llm_temperature,
-                        llm_base_url,
-                        llm_api_key,
-                        use_own_browser,
-                        keep_browser_open,
-                        headless,
-                        disable_security,
-                        enable_recording,
-                        window_w,
-                        window_h,
-                        save_recording_path,
-                        save_trace_path,
-                        save_agent_history_path,
-                        task,
-                        config_status,
-                    ],
-                )
-
-                save_config_button.click(
-                    fn=save_current_config,
-                    inputs=[
-                        agent_type,
-                        max_steps,
-                        max_actions_per_step,
-                        use_vision,
-                        tool_calling_method,
-                        llm_provider,
-                        llm_model_name,
-                        llm_num_ctx,
-                        llm_temperature,
-                        llm_base_url,
-                        llm_api_key,
-                        use_own_browser,
-                        keep_browser_open,
-                        headless,
-                        disable_security,
-                        enable_recording,
-                        window_w,
-                        window_h,
-                        save_recording_path,
-                        save_trace_path,
-                        save_agent_history_path,
-                        task,
-                    ],
-                    outputs=[config_status],
                 )
 
         # Attach the callback to the LLM provider dropdown
