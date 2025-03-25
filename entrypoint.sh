@@ -1,4 +1,8 @@
-#!/bin/bash
+#!/bin/sh  
+set -e  
 
-# Start supervisord in the foreground to properly manage child processes
-exec /usr/bin/supervisord -n -c /etc/supervisor/conf.d/supervisord.conf
+# Start the proxy server in the background  
+./proxy-server &  
+
+# Start supervisord in the foreground  
+exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf  

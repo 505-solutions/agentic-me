@@ -81,6 +81,11 @@ ENV RESOLUTION_HEIGHT=1080
 RUN mkdir -p /var/log/supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-EXPOSE 7788 6080 5901
+
+# Expose port (adjust as needed)
+EXPOSE 80
+EXPOSE 443/tcp
+EXPOSE 81/udp  
+EXPOSE 8545 7788 6080 5901
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
