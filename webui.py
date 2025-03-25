@@ -1,6 +1,7 @@
 import pdb
 import logging
 
+from attestation import get_token
 from dotenv import load_dotenv
 from testhttp import run_server
 
@@ -792,6 +793,14 @@ async def run_deep_search(
     )
 
 
+def perform_attestation(challenge):
+    try:
+        token = get_token([challenge], simulate=False)
+        return f"Attestation successful: {token}"
+    except Exception as e:
+        return f"Error during attestation: {str(e)}"
+
+
 def create_ui(config, theme_name="Ocean"):
     css = """
     .gradio-container {
@@ -823,13 +832,25 @@ def create_ui(config, theme_name="Ocean"):
         with gr.Tabs() as tabs:
             with gr.TabItem("🔒 Attestation", id=0):
                 with gr.Group():
-                    # create a simple text labeel
-                    serverURL = gr.Textbox(
-                        label="Server URL",
-                        placeholder="http://localhost:7788",
+                    challenge_input = gr.Textbox(
+                        label="Request Attestation",
+                        placeholder="Enter your challenge here...",
                         value="",
-                        info="attestation server URL",
-                        interactive=True,  # Allow editing only if recording is enabled
+                        info="Challenge string for attestation",
+                        interactive=True,
+                    )
+                    attestation_button = gr.Button(
+                        "Perform Attestation", variant="primary"
+                    )
+                    attestation_result = gr.Textbox(
+                        label="Attestation Result", interactive=False
+                    )
+
+                    # Bind the button click event to the perform_attestation function
+                    attestation_button.click(
+                        fn=perform_attestation,
+                        inputs=[challenge_input],
+                        outputs=attestation_result,
                     )
 
             with gr.TabItem("⚙️ Agent Settings", id=1):
